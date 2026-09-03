@@ -1,0 +1,238 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Beyond The Ridge — Design System
+   Palette (strict):  cream #F7F4EE · ink #252525 · clay #B86F52
+   Ratio ~ 70% cream / 25% ink / 5% clay
+   Type:  Fraunces (editorial serif) · Inter (modern sans)
+   ============================================================ */
+
+@theme {
+  /* Core palette + on-hue tints/shades (no new hues introduced) */
+  --color-cream: #f7f4ee;
+  --color-sand: #ece6da; /* deeper cream — subtle surfaces / hairlines */
+  --color-ink: #252525;
+  --color-charcoal: #1b1b1b; /* deepest ink shade — footer */
+  --color-clay: #b86f52;
+  --color-clay-deep: #a25f45; /* clay hover/press */
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  --font-serif: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+
+  --radius-xs: 2px;
+  --radius: 6px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  * {
+    border-color: color-mix(in srgb, var(--color-ink) 12%, transparent);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto;
+  }
+
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--color-clay);
+    color: var(--color-cream);
+  }
+
+  /* Custom scrollbar (light theme) */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-cream);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-ink) 25%, var(--color-cream));
+    border-radius: 999px;
+    border: 3px solid var(--color-cream);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-clay);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
+  }
+}
+
+/* ---------- Reusable primitives ---------- */
+@layer components {
+  /* Editorial page shell / max width */
+  .shell {
+    width: 100%;
+    max-width: 84rem; /* ~1344px */
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 2.5rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .shell {
+      padding-inline: 4rem;
+    }
+  }
+
+  /* Small uppercase editorial label ("kicker") */
+  .kicker {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+
+  /* Fluid display type */
+  .display {
+    font-size: clamp(2.75rem, 7vw, 6.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+  }
+  .display-lg {
+    font-size: clamp(3.25rem, 9vw, 8.5rem);
+    line-height: 0.94;
+    letter-spacing: -0.025em;
+  }
+  .heading {
+    font-size: clamp(2rem, 4.4vw, 3.75rem);
+    line-height: 1.02;
+  }
+
+  /* Animated link underline */
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* ---------- Utilities ---------- */
+@layer utilities {
+  /* Very subtle paper grain for premium depth */
+  .grain {
+    position: relative;
+  }
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  .hairline {
+    border-color: color-mix(in srgb, var(--color-ink) 14%, transparent);
+  }
+  .hairline-light {
+    border-color: color-mix(in srgb, var(--color-cream) 18%, transparent);
+  }
+
+  .writing-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  /* Marquee */
+  .animate-marquee,
+  .animate-marquee-slow {
+    will-change: transform;
+  }
+  .animate-marquee {
+    animation: marquee 35s linear infinite;
+  }
+  .animate-marquee-slow {
+    animation: marquee 50s linear infinite;
+  }
+
+  .marquee-text {
+    font-family: var(--font-serif);
+    font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: rgba(37, 37, 37, 0.82);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .animate-marquee-slow {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
