@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { gsap, useGSAP } from "../lib/gsap";
 import { services } from "../data/site";
@@ -11,6 +11,24 @@ export default function Services() {
   const rootRef = useRef(null);
   const imgRef = useRef(null);
   const [active, setActive] = useState(null);
+  const mousePos = useRef({ x: 0, y: 0 });
+  const rafRef = useRef(null);
+
+  // Cursor follow
+  const onMouseMove = useCallback((e) => {
+    mousePos.current = { x: e.clientX, y: e.clientY };
+    if (!rafRef.current) {
+      rafRef.current = requestAnimationFrame(() => {
+        if (imgRef.current) {
+          gsap.set(imgRef.current, {
+            x: mousePos.current.x + 24,
+            y: mousePos.current.y - 180,
+          });
+        }
+        rafRef.current = null;
+      });
+    }
+  }, []);
 
   // Intro stagger on rows + heading — with ScrollTrigger
   useGSAP(
@@ -18,13 +36,13 @@ export default function Services() {
       const q = gsap.utils.selector(rootRef);
 
       if (prefersReduced) {
-        gsap.set(q("[data-row]"), { opacity: 1, x: 0 });
-        gsap.set(q("[data-heading]"), { opacity: 1, y: 0 });
+        gsap.set(q("[data-s-row]"), { opacity: 1, y: 0 });
+        gsap.set(q("[data-s-head]"), { opacity: 1, y: 0 });
         return;
       }
 
-      gsap.set(q("[data-row]"), { opacity: 0, x: -32 });
-      gsap.set(q("[data-heading]"), { opacity: 0, y: 28 });
+      gsap.set(q("[data-s-row]"), { opacity: 0, y: 30 });
+      gsap.set(q("[data-s-head]"), { opacity: 0, y: 28 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -34,18 +52,19 @@ export default function Services() {
         },
       });
 
-      tl.to(q("[data-heading]"), {
+      tl.to(q("[data-s-head]"), {
         opacity: 1,
         y: 0,
         duration: 1,
+        stagger: 0.1,
         ease: "power3.out",
       }).to(
-        q("[data-row]"),
+        q("[data-s-row]"),
         {
           opacity: 1,
-          x: 0,
+          y: 0,
           duration: 0.8,
-          stagger: 0.09,
+          stagger: 0.08,
           ease: "power3.out",
         },
         "-=0.5"
@@ -60,8 +79,8 @@ export default function Services() {
       if (!imgRef.current) return;
       gsap.to(imgRef.current, {
         autoAlpha: active !== null ? 1 : 0,
-        scale: active !== null ? 1 : 0.92,
-        duration: 0.45,
+        scale: active !== null ? 1.05 : 0.9,
+        duration: 0.5,
         ease: "power3.out",
       });
     },
@@ -72,38 +91,39 @@ export default function Services() {
     <section
       id="services"
       ref={rootRef}
+      onMouseMove={onMouseMove}
       className="relative overflow-hidden bg-cream"
     >
       <div className="px-6 pt-20 pb-24 md:px-10 md:pt-28 md:pb-32">
-        {/* Header */}
-        <div data-heading className="mb-16 md:mb-20">
-          <div className="flex items-center gap-4 text-clay">
+        {/* Centered Header */}
+        <div className="mb-16 text-center md:mb-20">
+          <div data-s-head className="flex items-center justify-center gap-4 text-clay">
             <span className="h-px w-10 bg-clay" />
             <span className="kicker">What we create</span>
+            <span className="h-px w-10 bg-clay" />
           </div>
-          <h2 className="mt-6 font-serif text-5xl leading-[1.05] tracking-[-0.015em] text-ink md:text-6xl lg:text-[4.5rem]">
+          <h2 data-s-head className="mt-6 font-serif text-5xl leading-[1.05] tracking-[-0.015em] text-ink md:text-6xl lg:text-[4.5rem]">
             What we create
           </h2>
         </div>
 
-        {/* Main layout: rows left, floating image right */}
-        <div className="relative">
-          {/* Service rows */}
-          <ul className="relative z-10 max-w-4xl border-t border-ink/10">
+        {/* Centered service rows */}
+        <div className="mx-auto max-w-4xl">
+          <ul className="border-t border-ink/10">
             {services.map((s, i) => {
               const isActive = active === i;
               const isDimmed = active !== null && active !== i;
 
               return (
-                <li key={s.id} data-row>
+                <li key={s.id} data-s-row>
                   <a
                     href="#contact"
                     onMouseEnter={() => setActive(i)}
                     onMouseLeave={() => setActive(null)}
                     className="group flex items-center gap-4 border-b border-ink/10 py-7 transition-all duration-300 md:gap-8 md:py-10"
                     style={{
-                      opacity: isDimmed ? 0.35 : 1,
-                      paddingLeft: isActive ? "1rem" : "0",
+                      opacity: isDimmed ? 0.3 : 1,
+                      paddingLeft: isActive ? "1.5rem" : "0",
                     }}
                   >
                     {/* Number */}
@@ -116,7 +136,7 @@ export default function Services() {
 
                     {/* Vertical accent bar */}
                     <span
-                      className="hidden h-8 w-px shrink-0 transition-all duration-400 md:block"
+                      className="hidden h-8 w-px shrink-0 transition-all duration-300 md:block"
                       style={{
                         backgroundColor: isActive ? "#B86F52" : "rgba(37,37,37,0.08)",
                         transform: `scaleY(${isActive ? 1 : 0.5})`,
@@ -131,8 +151,9 @@ export default function Services() {
                       >
                         {s.title}
                       </h3>
-                      <p className="mt-1 text-sm text-ink/50 transition-opacity duration-300 md:text-base"
-                         style={{ opacity: isActive ? 1 : 0.6 }}
+                      <p
+                        className="mt-1 text-sm text-ink/50 transition-opacity duration-300 md:text-base"
+                        style={{ opacity: isActive ? 1 : 0.6 }}
                       >
                         {s.description}
                       </p>
@@ -162,26 +183,32 @@ export default function Services() {
               );
             })}
           </ul>
+        </div>
 
-          {/* Floating image — desktop only */}
-          <div
-            ref={imgRef}
-            onMouseEnter={() => setActive(active)}
-            onMouseLeave={() => setActive(null)}
-            className="pointer-events-auto absolute right-0 top-1/2 z-20 hidden -translate-y-1/2 overflow-hidden rounded-sm shadow-2xl lg:block lg:h-[36rem] lg:w-[480px]"
-            style={{ opacity: 0 }}
-          >
-            {services.map((s, i) => (
-              <img
-                key={s.id}
-                src={s.image}
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-                style={{ opacity: active === i ? 1 : 0 }}
-              />
-            ))}
-          </div>
+        {/* Cursor-following floating image — desktop */}
+        <div
+          ref={imgRef}
+          className="pointer-events-none fixed left-0 top-0 z-50 hidden overflow-hidden rounded-sm shadow-2xl lg:block"
+          style={{ opacity: 0, width: "420px", height: "340px" }}
+        >
+          {services.map((s, i) => (
+            <img
+              key={s.id}
+              src={s.image}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+              style={{ opacity: active === i ? 1 : 0 }}
+            />
+          ))}
+          {/* Label overlay */}
+          {active !== null && (
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-ink/70 to-transparent p-5">
+              <span className="text-xs font-medium uppercase tracking-[0.12em] text-cream">
+                {services[active]?.title}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </section>
