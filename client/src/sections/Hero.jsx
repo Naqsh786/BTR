@@ -52,7 +52,7 @@ export default function Hero() {
       gsap.set(q("[data-h-accent]"), { scaleX: 0 });
 
       const tl = gsap.timeline({
-        delay: 0.15,
+        delay: 4.2,
         defaults: { ease: "power4.out" },
       });
 

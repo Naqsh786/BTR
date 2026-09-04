@@ -2,11 +2,22 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, X, Phone, ArrowUpRight } from "lucide-react";
 import { gsap, useGSAP } from "../../lib/gsap";
 import { business, nav, navCta } from "../../data/site";
+import { useLenisInstance } from "../../hooks/useLenis.jsx";
+
+function smoothScroll(e, lenis, target) {
+  if (!lenis?.current || !target?.startsWith("#")) return;
+  e.preventDefault();
+  const el = document.querySelector(target);
+  if (el) {
+    lenis.current.scrollTo(el, { offset: 0, duration: 1.6 });
+  }
+}
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef(null);
+  const lenis = useLenisInstance();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -22,7 +33,6 @@ export default function Navbar() {
     };
   }, [open]);
 
-  // Escape key closes mobile menu
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => {
@@ -69,8 +79,13 @@ export default function Navbar() {
         }`}
       >
         <div className="shell flex items-center justify-between gap-6">
-          {/* Brand — logo fades in on scroll, wordmark recolours */}
-          <a href="#home" className="flex items-center" aria-label={business.name}>
+          {/* Brand */}
+          <a
+            href="#home"
+            onClick={(e) => smoothScroll(e, lenis, "#home")}
+            className="flex items-center"
+            aria-label={business.name}
+          >
             <span
               className={`overflow-hidden transition-all duration-500 ${
                 scrolled ? "mr-3 w-10 opacity-100" : "mr-0 w-0 opacity-0"
@@ -102,6 +117,7 @@ export default function Navbar() {
               <a
                 key={item.href}
                 href={item.href}
+                onClick={(e) => smoothScroll(e, lenis, item.href)}
                 className={`link-underline text-[0.82rem] font-medium tracking-wide transition-colors ${linkColor}`}
               >
                 {item.label}
@@ -123,6 +139,7 @@ export default function Navbar() {
 
             <a
               href={navCta.href}
+              onClick={(e) => smoothScroll(e, lenis, navCta.href)}
               className="group hidden items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-[0.8rem] font-medium text-cream transition-colors duration-300 hover:bg-clay-deep sm:inline-flex"
             >
               {navCta.label}
@@ -174,7 +191,10 @@ export default function Navbar() {
               <a
                 data-menu-item
                 href={item.href}
-                onClick={() => setOpen(false)}
+                onClick={(e) => {
+                  smoothScroll(e, lenis, item.href);
+                  setOpen(false);
+                }}
                 className="group flex items-baseline gap-4 font-serif text-5xl text-ink sm:text-6xl"
               >
                 <span className="kicker text-xs text-clay">0{i + 1}</span>
@@ -189,7 +209,10 @@ export default function Navbar() {
         <div className="shell flex flex-col gap-5 border-t border-ink/10 py-7">
           <a
             href={navCta.href}
-            onClick={() => setOpen(false)}
+            onClick={(e) => {
+              smoothScroll(e, lenis, navCta.href);
+              setOpen(false);
+            }}
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-clay px-6 py-4 text-sm font-medium text-cream"
           >
             {navCta.label}

@@ -3,6 +3,10 @@ import { ArrowRight } from "lucide-react";
 import { gsap, useGSAP, ScrollTrigger } from "../lib/gsap";
 import { work } from "../data/site";
 
+const prefersReduced =
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 export default function Work() {
   const pin = useRef(null);
   const track = useRef(null);
@@ -33,6 +37,23 @@ export default function Work() {
 
   useGSAP(
     () => {
+      // Header entrance
+      if (!prefersReduced) {
+        gsap.set("[data-w-head]", { opacity: 0, y: 24 });
+        gsap.to("[data-w-head]", {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: pin.current,
+            start: "top 70%",
+            once: true,
+          },
+        });
+      }
+
       const mm = gsap.matchMedia();
       mm.add("(min-width: 768px)", () => {
         const el = track.current;
@@ -70,17 +91,17 @@ export default function Work() {
         <div className="shell shrink-0">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <div className="flex items-center gap-4 text-clay">
+              <div data-w-head className="flex items-center gap-4 text-clay">
                 <span className="h-px w-10 bg-clay" />
                 <span className="kicker">Selected work</span>
               </div>
-              <h2 className="mt-7 font-serif text-5xl leading-[1.05] tracking-[-0.015em] text-cream md:text-6xl lg:text-[4.5rem]">
+              <h2 data-w-head className="mt-7 font-serif text-5xl leading-[1.05] tracking-[-0.015em] text-cream md:text-6xl lg:text-[4.5rem]">
                 Spaces we&rsquo;ve
                 <br />
                 transformed
               </h2>
             </div>
-            <div className="hidden items-center gap-3 kicker text-[0.6rem] text-cream/50 md:flex">
+            <div data-w-head className="hidden items-center gap-3 kicker text-[0.6rem] text-cream/50 md:flex">
               <span>Drag / scroll</span>
               <ArrowRight size={16} strokeWidth={1.75} className="text-clay" />
             </div>

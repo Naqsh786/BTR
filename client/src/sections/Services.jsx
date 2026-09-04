@@ -3,34 +3,53 @@ import { ArrowUpRight } from "lucide-react";
 import { gsap, useGSAP } from "../lib/gsap";
 import { services } from "../data/site";
 
+const prefersReduced =
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 export default function Services() {
   const rootRef = useRef(null);
   const imgRef = useRef(null);
   const [active, setActive] = useState(null);
 
-  // Intro stagger on rows + heading
+  // Intro stagger on rows + heading — with ScrollTrigger
   useGSAP(
     () => {
       const q = gsap.utils.selector(rootRef);
 
+      if (prefersReduced) {
+        gsap.set(q("[data-row]"), { opacity: 1, x: 0 });
+        gsap.set(q("[data-heading]"), { opacity: 1, y: 0 });
+        return;
+      }
+
       gsap.set(q("[data-row]"), { opacity: 0, x: -32 });
       gsap.set(q("[data-heading]"), { opacity: 0, y: 28 });
 
-      gsap.to(q("[data-heading]"), {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: "top 65%",
+          once: true,
+        },
+      });
+
+      tl.to(q("[data-heading]"), {
         opacity: 1,
         y: 0,
         duration: 1,
         ease: "power3.out",
-      });
-
-      gsap.to(q("[data-row]"), {
-        opacity: 1,
-        x: 0,
-        duration: 0.8,
-        stagger: 0.09,
-        delay: 0.15,
-        ease: "power3.out",
-      });
+      }).to(
+        q("[data-row]"),
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          stagger: 0.09,
+          ease: "power3.out",
+        },
+        "-=0.5"
+      );
     },
     { scope: rootRef }
   );

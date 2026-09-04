@@ -5,6 +5,10 @@ import { values } from "../data/site";
 
 const iconMap = { Sparkles, Hammer, Leaf, PencilRuler };
 
+const prefersReduced =
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 const keyPoints = [
   {
     number: "01",
@@ -35,33 +39,28 @@ export default function Values() {
     () => {
       const q = gsap.utils.selector(sectionRef);
 
-      gsap.set(q("[data-statement]"), { opacity: 0, y: 40 });
-      gsap.set(q("[data-point]"), { opacity: 0, y: 32 });
+      if (prefersReduced) {
+        gsap.set(q("[data-v-el]"), { opacity: 1, y: 0 });
+        return;
+      }
+
+      gsap.set(q("[data-v-el]"), { opacity: 0, y: 32 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 70%",
+          start: "top 65%",
           once: true,
         },
       });
 
-      tl.to(q("[data-statement]"), {
+      tl.to(q("[data-v-el]"), {
         opacity: 1,
         y: 0,
-        duration: 1,
+        duration: 0.8,
+        stagger: 0.08,
         ease: "power3.out",
-      }).to(
-        q("[data-point]"),
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.1,
-          ease: "power3.out",
-        },
-        "-=0.5"
-      );
+      });
     },
     { scope: sectionRef }
   );
@@ -70,13 +69,13 @@ export default function Values() {
     <section ref={sectionRef} className="bg-sand">
       <div className="px-6 py-20 md:px-10 md:py-32">
         {/* Kicker */}
-        <div className="flex items-center gap-4 text-clay">
+        <div data-v-el className="flex items-center gap-4 text-clay">
           <span className="h-px w-10 bg-clay" />
           <span className="kicker">Why beyond the ridge</span>
         </div>
 
         {/* Editorial statement */}
-        <div data-statement className="mt-8 max-w-4xl">
+        <div data-v-el className="mt-8 max-w-4xl">
           <h2 className="font-serif text-[clamp(2.5rem,7vw,6rem)] leading-[0.95] tracking-[-0.02em] text-ink">
             20+ years.
             <br />
@@ -88,7 +87,7 @@ export default function Values() {
 
         {/* Description */}
         <p
-          data-statement
+          data-v-el
           className="mt-8 max-w-xl text-lg leading-relaxed text-ink/60"
         >
           Trusted by homeowners and builders across Muskoka, we bring over two
@@ -98,11 +97,12 @@ export default function Values() {
 
         {/* 4 Key points */}
         <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-4">
-          {keyPoints.map((point) => (
+          {keyPoints.map((point, i) => (
             <div
               key={point.number}
-              data-point
+              data-v-el
               className="bg-sand p-8 transition-colors duration-500 hover:bg-cream"
+              style={{ transitionDelay: `${i * 60}ms` }}
             >
               <span className="font-serif text-3xl text-clay/60">
                 {point.number}
@@ -117,10 +117,15 @@ export default function Values() {
 
         {/* Values strip — icon row */}
         <div className="mt-16 grid grid-cols-2 gap-6 border-t border-ink/10 pt-12 sm:grid-cols-4">
-          {values.map((v) => {
+          {values.map((v, i) => {
             const Icon = iconMap[v.icon] ?? Sparkles;
             return (
-              <div key={v.title} className="flex items-start gap-4">
+              <div
+                key={v.title}
+                data-v-el
+                className="flex items-start gap-4"
+                style={{ transitionDelay: `${i * 80}ms` }}
+              >
                 <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-clay/25 text-clay">
                   <Icon size={18} strokeWidth={1.5} />
                 </span>

@@ -4,10 +4,15 @@ import { gsap, useGSAP } from "../lib/gsap";
 import { testimonials } from "../data/site";
 import Stars from "../components/ui/Stars";
 
+const prefersReduced =
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 export default function Testimonials() {
   const [active, setActive] = useState(0);
   const paused = useRef(false);
   const content = useRef(null);
+  const rootRef = useRef(null);
   const t = testimonials[active];
   const len = testimonials.length;
 
@@ -18,8 +23,36 @@ export default function Testimonials() {
     return () => clearInterval(id);
   }, [len]);
 
+  // Section entrance
   useGSAP(
     () => {
+      if (prefersReduced) {
+        gsap.set(rootRef.current.querySelectorAll("[data-t-entrance]"), { opacity: 1, y: 0 });
+        return;
+      }
+
+      gsap.set(rootRef.current.querySelectorAll("[data-t-entrance]"), { opacity: 0, y: 30 });
+
+      gsap.to(rootRef.current.querySelectorAll("[data-t-entrance]"), {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: "top 65%",
+          once: true,
+        },
+      });
+    },
+    { scope: rootRef }
+  );
+
+  // Quote transition
+  useGSAP(
+    () => {
+      if (!content.current) return;
       gsap.fromTo(
         content.current.querySelectorAll("[data-t-anim]"),
         { opacity: 0, y: 24 },
@@ -34,17 +67,18 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
+      ref={rootRef}
       className="relative bg-ink text-cream grain"
       onMouseEnter={() => (paused.current = true)}
       onMouseLeave={() => (paused.current = false)}
     >
       <div className="px-6 py-24 md:px-10 md:py-32">
         {/* Header */}
-        <div className="flex items-center gap-4 text-clay">
+        <div data-t-entrance className="flex items-center gap-4 text-clay">
           <span className="h-px w-10 bg-clay" />
           <span className="kicker">Testimonials</span>
         </div>
-        <h2 className="mt-7 font-serif text-5xl leading-[1.05] tracking-[-0.015em] text-cream md:text-6xl lg:text-[4.5rem]">
+        <h2 data-t-entrance className="mt-7 font-serif text-5xl leading-[1.05] tracking-[-0.015em] text-cream md:text-6xl lg:text-[4.5rem]">
           Trusted by homeowners{" "}
           <span className="text-clay">&amp; builders.</span>
         </h2>
@@ -52,7 +86,6 @@ export default function Testimonials() {
         <div ref={content} className="mt-16 grid gap-12 md:grid-cols-12 md:gap-10">
           {/* Quote */}
           <div className="md:col-span-8">
-            {/* Large quotation mark */}
             <span
               data-t-anim
               className="block font-serif text-[clamp(4rem,8vw,8rem)] leading-none text-clay/30"

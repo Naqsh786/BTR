@@ -5,7 +5,11 @@ import { faqs } from "../data/site";
 import Reveal, { Lines } from "../components/ui/Reveal";
 import Button from "../components/ui/Button";
 
-function FaqItem({ q, a, index, isOpen, onToggle }) {
+const prefersReduced =
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function FaqItem({ q, a, index, isOpen, onToggle, itemRef }) {
   const body = useRef(null);
 
   useGSAP(
@@ -13,7 +17,7 @@ function FaqItem({ q, a, index, isOpen, onToggle }) {
       gsap.to(body.current, {
         height: isOpen ? "auto" : 0,
         opacity: isOpen ? 1 : 0,
-        duration: 0.5,
+        duration: prefersReduced ? 0 : 0.5,
         ease: "power3.inOut",
       });
     },
@@ -21,7 +25,7 @@ function FaqItem({ q, a, index, isOpen, onToggle }) {
   );
 
   return (
-    <div className="border-t border-ink/10 last:border-b">
+    <div ref={itemRef} className="faq-item border-t border-ink/10 last:border-b" style={{ opacity: 0 }}>
       <button
         type="button"
         onClick={onToggle}
@@ -33,7 +37,7 @@ function FaqItem({ q, a, index, isOpen, onToggle }) {
             {String(index + 1).padStart(2, "0")}
           </span>
           <span
-            className={`font-serif text-xl leading-snug transition-colors md:text-2xl ${
+            className={`font-serif text-xl leading-snug transition-colors duration-300 md:text-2xl ${
               isOpen ? "text-clay" : "text-ink group-hover:text-clay"
             }`}
           >
@@ -61,9 +65,36 @@ function FaqItem({ q, a, index, isOpen, onToggle }) {
 
 export default function Faq() {
   const [open, setOpen] = useState(0);
+  const rootRef = useRef(null);
+  const itemsRef = useRef([]);
+
+  useGSAP(
+    () => {
+      if (prefersReduced) {
+        gsap.set(".faq-item", { opacity: 1 });
+        return;
+      }
+
+      gsap.set(".faq-item", { opacity: 0, x: 40 });
+
+      gsap.to(".faq-item", {
+        opacity: 1,
+        x: 0,
+        duration: 0.7,
+        stagger: 0.08,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: "top 65%",
+          once: true,
+        },
+      });
+    },
+    { scope: rootRef }
+  );
 
   return (
-    <section id="faq" className="relative bg-cream">
+    <section id="faq" ref={rootRef} className="relative bg-cream">
       <div className="shell py-24 md:py-32">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Sticky heading */}
@@ -99,6 +130,7 @@ export default function Faq() {
                 a={f.a}
                 isOpen={open === i}
                 onToggle={() => setOpen(open === i ? -1 : i)}
+                itemRef={(el) => (itemsRef.current[i] = el)}
               />
             ))}
           </div>
