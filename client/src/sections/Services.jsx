@@ -1,7 +1,21 @@
 import { useRef, useState, useCallback } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { gsap, useGSAP } from "../lib/gsap";
-import { services } from "../data/site";
+import heroBathroom from "../assets/images/hero-bathroom.jpg";
+import bathroomTravertine from "../assets/images/bathroom-travertine.jpg";
+import kitchenWhite from "../assets/images/kitchen-white.jpg";
+import diningRoom from "../assets/images/dining-room.jpg";
+import heating from "../assets/images/heating.jpg";
+import kitchenModern from "../assets/images/kitchen-modern.jpg";
+
+const services = [
+  { id: "bathroom", index: "01", title: "Bathroom Renovations", description: "Functional, modern and elegant bathrooms reimagined as everyday retreats.", image: heroBathroom },
+  { id: "waterproofing", index: "02", title: "Custom Showers & Waterproofing", description: "Seamless custom showers designed for beauty and long-term protection.", image: bathroomTravertine },
+  { id: "kitchen", index: "03", title: "Kitchen & Backsplashes", description: "Stylish, protective backsplashes and renovations for the heart of your home.", image: kitchenWhite },
+  { id: "flooring", index: "04", title: "Flooring", description: "Quality tile and flooring, expertly sourced and precisely installed.", image: diningRoom },
+  { id: "heating", index: "05", title: "In-Floor Heating", description: "Radiant warmth and comfort layered quietly beneath your floors.", image: heating },
+  { id: "painting", index: "06", title: "Painting & Trim", description: "The finishing details that complete a renovation, done right.", image: kitchenModern },
+];
 
 const prefersReduced =
   typeof window !== "undefined" &&

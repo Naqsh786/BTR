@@ -1,7 +1,17 @@
 import { useRef, useState, useCallback } from "react";
 import { ArrowUpRight, ArrowRight, Play, Pause } from "lucide-react";
 import { gsap, useGSAP } from "../lib/gsap";
-import { hero, work as workItems } from "../data/site";
+import heroBathroom from "../assets/images/hero-bathroom.jpg";
+import kitchenWhite from "../assets/images/kitchen-white.jpg";
+import bathroomTravertine from "../assets/images/bathroom-travertine.jpg";
+import heating from "../assets/images/heating.jpg";
+
+const workItems = [
+  { title: "Glass Shower Retreat", image: heroBathroom },
+  { title: "Bright Modern Kitchen", image: kitchenWhite },
+  { title: "Wood & Travertine Bath", image: bathroomTravertine },
+  { title: "Radiant Floor System", image: heating },
+];
 
 const prefersReduced =
   typeof window !== "undefined" &&
@@ -153,13 +163,14 @@ export default function Hero() {
     { scope: root }
   );
 
-  const lastLine = hero.titleLines.length - 1;
+  const titleLines = ["Beyond the", "ordinary."];
+  const lastLine = titleLines.length - 1;
 
   return (
     <section
       id="home"
       ref={root}
-      className="relative min-h-[100svh] w-full overflow-hidden bg-ink grain"
+      className="relative min-h-svh w-full overflow-hidden bg-ink grain"
     >
       {/* Image layer — fades out when video plays */}
       <div
@@ -201,40 +212,40 @@ export default function Hero() {
       />
 
       {/* Content */}
-      <div className="relative z-10 flex min-h-[100svh] flex-col">
-        <div className="shell flex flex-1 flex-col justify-end pb-12 pt-32 md:pb-16">
+      <div className="relative z-10 flex min-h-svh flex-col">
+        <div className="shell flex flex-1 flex-col justify-end pb-5 pt-20 md:pb-16">
 
           {/* Top row: Badge + Location */}
-          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             {/* Award badge */}
             <div
               data-h-badge
-              className="inline-flex items-center gap-2.5 self-start rounded-full border border-clay/30 bg-ink/40 px-4 py-2 backdrop-blur-sm will-change-transform"
+              className="inline-flex items-center gap-2.5 self-start rounded-full border border-clay/30 bg-ink/40 ps-2 pe-4 py-2 backdrop-blur-sm will-change-transform"
             >
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-clay text-[0.6rem] font-bold text-cream">
-                {hero.badge.year}
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-clay text-[0.6rem] font-bold text-cream">
+                2024
               </span>
               <span className="text-[0.7rem] font-medium uppercase tracking-[0.12em] text-cream">
-                {hero.badge.label}
+                Best of Muskoka
               </span>
             </div>
 
             {/* Location */}
             <div data-h-fade className="flex items-center gap-3 text-cream/70">
               <span className="h-px w-8 bg-cream/30" />
-              <span className="kicker text-[0.6rem]">{hero.location}</span>
+              <span className="kicker text-[0.6rem]">Muskoka, Ontario</span>
             </div>
           </div>
 
           {/* Experience kicker */}
           <div data-h-fade className="flex items-center gap-4 text-cream">
             <span className="h-px w-12 bg-clay" />
-            <span className="kicker text-cream/85">{hero.experience}</span>
+            <span className="kicker text-cream/85">20+ Years of Craftsmanship</span>
           </div>
 
           {/* Headline */}
           <h1 className="mt-5 font-serif uppercase leading-[0.88] tracking-[-0.025em] text-cream text-[clamp(3rem,11vw,9.5rem)]">
-            {hero.titleLines.map((line, i) => (
+            {titleLines.map((line, i) => (
               <span key={i} className="block overflow-hidden">
                 <span data-h-line className="block">
                   {i === lastLine ? (
@@ -257,16 +268,16 @@ export default function Hero() {
                 data-h-fade
                 className="max-w-md text-base leading-relaxed text-cream/78 md:text-lg"
               >
-                {hero.lead}
+                Bathrooms, kitchens &amp; flooring crafted with care. Beyond The Ridge is more than a tile contractor — we&rsquo;re your renovation partner across Muskoka.
               </p>
 
               <div className="flex flex-wrap gap-4">
                 <a
                   data-h-cta
-                  href={hero.primaryCta.href}
+                  href="#contact"
                   className="group inline-flex items-center gap-2 rounded-full bg-clay px-8 py-3.5 text-[0.78rem] font-medium uppercase tracking-[0.14em] text-cream transition-colors duration-300 hover:bg-clay-deep"
                 >
-                  {hero.primaryCta.label}
+                  Start Your Project
                   <ArrowUpRight
                     size={16}
                     strokeWidth={1.75}
@@ -275,10 +286,10 @@ export default function Hero() {
                 </a>
                 <a
                   data-h-cta
-                  href={hero.secondaryCta.href}
+                  href="#work"
                   className="group inline-flex items-center gap-2 rounded-full border border-cream/35 px-8 py-3.5 text-[0.78rem] font-medium uppercase tracking-[0.14em] text-cream transition-colors duration-300 hover:border-cream hover:bg-cream hover:text-ink"
                 >
-                  {hero.secondaryCta.label}
+                  Explore Our Work
                   <ArrowRight
                     size={16}
                     strokeWidth={1.75}
@@ -298,7 +309,7 @@ export default function Hero() {
                 <span className="relative flex h-14 w-14 items-center justify-center">
                   <span
                     data-h-ring
-                    className="absolute inset-0 rounded-full border border-cream/30"
+                    className="absolute inset-0 rounded-full border border-cream"
                   />
                   <span className="absolute inset-0 rounded-full border border-cream/15" />
                   {playing ? (
@@ -308,7 +319,7 @@ export default function Hero() {
                   )}
                 </span>
                 <span className="text-[0.7rem] font-medium uppercase tracking-[0.12em]">
-                  {playing ? "Pause" : hero.playLabel}
+                  {playing ? "Pause" : "Watch Our Story"}
                 </span>
               </button>
             </div>
@@ -319,7 +330,11 @@ export default function Hero() {
             data-h-fade
             className="mt-10 flex flex-wrap gap-x-10 gap-y-4 border-t border-cream/15 pt-6"
           >
-            {hero.stats.map((stat, i) => (
+            {[
+              { value: "20+", label: "Years" },
+              { value: "500+", label: "Projects" },
+              { value: "100%", label: "Satisfaction" },
+            ].map((stat, i) => (
               <div key={i} data-h-stat className="flex items-baseline gap-2">
                 <span className="font-serif text-4xl font-bold text-clay md:text-5xl">
                   {stat.value}
@@ -333,7 +348,7 @@ export default function Hero() {
             <div className="ml-auto hidden items-center gap-3 text-cream/50 md:flex">
               <span className="h-px w-6 bg-cream/25" />
               <span className="text-[0.6rem] uppercase tracking-[0.1em]">
-                {hero.trust}
+                Trusted by homeowners &amp; builders across Muskoka
               </span>
             </div>
           </div>

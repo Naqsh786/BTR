@@ -1,7 +1,23 @@
 import { useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import { gsap, useGSAP, ScrollTrigger } from "../lib/gsap";
-import { work } from "../data/site";
+import heroBathroom from "../assets/images/hero-bathroom.jpg";
+import kitchenWhite from "../assets/images/kitchen-white.jpg";
+import bathroomTravertine from "../assets/images/bathroom-travertine.jpg";
+import heating from "../assets/images/heating.jpg";
+import diningRoom from "../assets/images/dining-room.jpg";
+import kitchenModern from "../assets/images/kitchen-modern.jpg";
+import projectRev from "../assets/images/project-rev.jpg";
+
+const work = [
+  { title: "Glass Shower Retreat", category: "Bathroom", subtitle: "Custom Tile & Design", image: heroBathroom },
+  { title: "Bright Modern Kitchen", category: "Kitchen", subtitle: "Tile & Backsplash", image: kitchenWhite },
+  { title: "Wood & Travertine Bath", category: "Custom Tile", subtitle: "Shower & Waterproofing", image: bathroomTravertine },
+  { title: "Radiant Floor System", category: "Flooring", subtitle: "In-Floor Heating", image: heating },
+  { title: "Open Dining Floor", category: "Flooring", subtitle: "Tile Installation", image: diningRoom },
+  { title: "Designer Kitchen", category: "Kitchen", subtitle: "Backsplash & Tile", image: kitchenModern },
+  { title: "Exterior Deck Build", category: "Exterior", subtitle: "Wood Deck & Tile", image: projectRev },
+];
 
 const prefersReduced =
   typeof window !== "undefined" &&
@@ -85,7 +101,7 @@ export default function Work() {
     <section id="work" className="relative bg-ink text-cream grain overflow-hidden">
       <div
         ref={pin}
-        className="flex flex-col justify-center py-24 md:h-screen md:py-0"
+        className="flex flex-col justify-center py-20 md:min-h-screen md:py-16"
       >
         {/* Header */}
         <div className="shell shrink-0">
@@ -95,7 +111,7 @@ export default function Work() {
                 <span className="h-px w-10 bg-clay" />
                 <span className="kicker">Selected work</span>
               </div>
-              <h2 data-w-head className="mt-7 font-serif text-5xl leading-[1.05] tracking-[-0.015em] text-cream md:text-6xl lg:text-[4.5rem]">
+              <h2 data-w-head className="font-serif text-5xl leading-[1.05] tracking-[-0.015em] text-cream md:text-6xl lg:text-[4rem]">
                 Spaces we&rsquo;ve
                 <br />
                 transformed
@@ -109,7 +125,7 @@ export default function Work() {
         </div>
 
         {/* Track */}
-        <div className="mt-12 overflow-hidden md:mt-16 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="mt-8 overflow-hidden md:mt-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div
             ref={track}
             className="flex w-max gap-5 px-6 md:gap-8 md:px-10 xl:px-16"
@@ -119,11 +135,11 @@ export default function Work() {
                 key={item.title}
                 className="group w-[80vw] shrink-0 sm:w-[58vw] md:w-[44vw] lg:w-[34vw] xl:w-[30vw]"
               >
-                <div className="relative overflow-hidden rounded-sm bg-charcoal">
+                <div className="relative overflow-hidden bg-charcoal">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="h-[52vh] w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105 md:h-[58vh]"
+                    className="h-[52vh] w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105 md:h-[40vh]"
                   />
                   <span className="absolute right-4 top-4 rounded-full bg-cream/90 px-3 py-1.5 kicker text-[0.55rem] text-ink/70 backdrop-blur-sm">
                     {item.category}

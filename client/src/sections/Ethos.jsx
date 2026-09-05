@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { gsap, useGSAP } from "../lib/gsap";
-import { ethos } from "../data/site";
 
 const prefersReduced =
   typeof window !== "undefined" &&
@@ -69,7 +68,7 @@ export default function Ethos() {
         {/* Kicker */}
         <div data-e-el className="flex items-center gap-4 text-clay">
           <span className="h-px w-10 bg-clay" />
-          <span className="kicker">{ethos.kicker}</span>
+          <span className="kicker">Our philosophy</span>
         </div>
 
         {/* Statement */}
@@ -105,7 +104,7 @@ export default function Ethos() {
           {/* Body text */}
           <div data-e-el className="md:col-span-5">
             <p className="text-lg leading-relaxed text-cream/65">
-              {ethos.body}
+              Based in Muskoka, we specialize in custom tile and design, bathroom renovations, and flooring solutions. Our mission is simple: to bring your vision to life through craftsmanship, communication, and dedication.
             </p>
             <div className="mt-6 flex items-center gap-3 text-cream/35">
               <span className="h-px w-8 bg-clay/50" />

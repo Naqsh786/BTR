@@ -29,6 +29,7 @@ export default function Button({
   ...props
 }) {
   const Comp = as;
+
   return (
     <Comp
       href={as === "a" ? href : undefined}

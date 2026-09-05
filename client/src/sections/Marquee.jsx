@@ -1,4 +1,12 @@
-import { marquee } from "../data/site";
+const marqueeItems = [
+  "Custom Tile",
+  "Bathrooms",
+  "Kitchens",
+  "Flooring",
+  "Craftsmanship",
+  "Design",
+  "Muskoka",
+];
 
 function MarqueeRow({ items, reverse = false }) {
   const separated = items.flatMap((item, i) => {
@@ -43,10 +51,7 @@ export default function Marquee() {
   return (
     <section className="border-b border-ink/8 bg-cream">
       {/* Row 1 — forward, serif */}
-      <MarqueeRow items={marquee.items} />
-
-      {/* Row 2 — reverse, slightly different feel */}
-      {/* <MarqueeRow items={[...marquee.items].reverse()} reverse /> */}
+      <MarqueeRow items={marqueeItems} />
 
       {/* Bottom accent line */}
       <div className="mx-6 h-px bg-gradient-to-r from-transparent via-clay/20 to-transparent md:mx-10" />

@@ -1,8 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Menu, X, Phone, ArrowUpRight } from "lucide-react";
 import { gsap, useGSAP } from "../../lib/gsap";
-import { business, nav, navCta } from "../../data/site";
+import logo from "../../assets/images/logo.png";
 import { useLenisInstance } from "../../hooks/useLenis.jsx";
+
+const nav = [
+  { label: "Home", href: "#home" },
+  { label: "Services", href: "#services" },
+  { label: "Our Work", href: "#work" },
+  { label: "About", href: "#about" },
+];
+const phone = "(705) 706-2329";
+const phoneHref = "tel:7057062329";
 
 function smoothScroll(e, lenis, target) {
   if (!lenis?.current || !target?.startsWith("#")) return;
@@ -84,14 +93,14 @@ export default function Navbar() {
             href="#home"
             onClick={(e) => smoothScroll(e, lenis, "#home")}
             className="flex items-center"
-            aria-label={business.name}
+            aria-label="Beyond The Ridge"
           >
             <span
               className={`overflow-hidden transition-all duration-500 ${
                 scrolled ? "mr-3 w-10 opacity-100" : "mr-0 w-0 opacity-0"
               }`}
             >
-              <img src={business.logo} alt="" className="h-10 w-10 object-contain" />
+              <img src={logo} alt="" className="h-10 w-10 object-contain" />
             </span>
             <span className="flex flex-col leading-none">
               <span
@@ -99,14 +108,14 @@ export default function Navbar() {
                   scrolled ? "text-ink" : "text-cream"
                 }`}
               >
-                {business.name}
+                Beyond The Ridge
               </span>
               <span
                 className={`kicker mt-1 text-[0.55rem] transition-colors duration-500 ${
                   scrolled ? "text-clay" : "text-cream/70"
                 }`}
               >
-                {business.descriptor}
+                Custom Tile &amp; Design
               </span>
             </span>
           </a>
@@ -128,21 +137,21 @@ export default function Navbar() {
           {/* Right actions */}
           <div className="flex items-center gap-3">
             <a
-              href={business.phoneHref}
+              href={phoneHref}
               className={`hidden items-center gap-2 text-[0.82rem] font-medium transition-colors xl:inline-flex ${
                 scrolled ? "text-ink/70 hover:text-clay" : "text-cream/80 hover:text-cream"
               }`}
             >
               <Phone size={15} strokeWidth={1.75} />
-              {business.phone}
+              {phone}
             </a>
 
             <a
-              href={navCta.href}
-              onClick={(e) => smoothScroll(e, lenis, navCta.href)}
+              href="#contact"
+              onClick={(e) => smoothScroll(e, lenis, "#contact")}
               className="group hidden items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-[0.8rem] font-medium text-cream transition-colors duration-300 hover:bg-clay-deep sm:inline-flex"
             >
-              {navCta.label}
+              Get a Free Estimate
               <ArrowUpRight
                 size={15}
                 strokeWidth={1.75}
@@ -172,8 +181,8 @@ export default function Navbar() {
       >
         <div className="shell flex items-center justify-between py-6">
           <span className="flex items-center gap-3">
-            <img src={business.logo} alt="" className="h-10 w-10 object-contain" />
-            <span className="font-serif text-lg text-ink">{business.name}</span>
+            <img src={logo} alt="" className="h-10 w-10 object-contain" />
+            <span className="font-serif text-lg text-ink">Beyond The Ridge</span>
           </span>
           <button
             type="button"
@@ -208,22 +217,22 @@ export default function Navbar() {
 
         <div className="shell flex flex-col gap-5 border-t border-ink/10 py-7">
           <a
-            href={navCta.href}
+            href="#contact"
             onClick={(e) => {
-              smoothScroll(e, lenis, navCta.href);
+              smoothScroll(e, lenis, "#contact");
               setOpen(false);
             }}
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-clay px-6 py-4 text-sm font-medium text-cream"
           >
-            {navCta.label}
+            Get a Free Estimate
             <ArrowUpRight size={16} strokeWidth={1.75} />
           </a>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <a href={business.phoneHref} className="text-lg font-medium text-ink">
-              {business.phone}
+            <a href={phoneHref} className="text-lg font-medium text-ink">
+              {phone}
             </a>
-            <a href={`mailto:${business.email}`} className="text-ink/70">
-              {business.email}
+            <a href="mailto:kevinsr@beyondtheridge.ca" className="text-ink/70">
+              kevinsr@beyondtheridge.ca
             </a>
           </div>
         </div>
