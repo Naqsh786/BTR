@@ -1,9 +1,15 @@
 import { useRef } from "react";
 import { Sparkles, Hammer, Leaf, PencilRuler } from "lucide-react";
 import { gsap, useGSAP } from "../lib/gsap";
-import { values } from "../data/site";
 
 const iconMap = { Sparkles, Hammer, Leaf, PencilRuler };
+
+const values = [
+  { icon: "Sparkles", title: "Elevate spaces", body: "Every project is designed to enhance your home's comfort, beauty, and functionality." },
+  { icon: "Hammer", title: "Quality craftsmanship", body: "With 20+ years of experience, we deliver work built to last a lifetime." },
+  { icon: "Leaf", title: "Environmental responsibility", body: "We source durable, eco-friendly materials wherever possible." },
+  { icon: "PencilRuler", title: "Personalized design", body: "Tailored solutions that reflect your unique style and needs." },
+];
 
 const prefersReduced =
   typeof window !== "undefined" &&
@@ -61,12 +67,88 @@ export default function Values() {
         stagger: 0.08,
         ease: "power3.out",
       });
+
+      const floatTimeline = gsap.timeline({ repeat: -1, yoyo: true });
+      floatTimeline
+        .to(q("[data-v-shape]"), {
+          x: 7,
+          y: -18,
+          duration: 4.8,
+          ease: "sine.inOut",
+        })
+        .to(
+          q("[data-v-blob]"),
+          {
+            scaleX: 1.035,
+            scaleY: 0.975,
+            rotation: 3,
+            duration: 4.8,
+            ease: "sine.inOut",
+          },
+          0
+        )
+        .to(
+          q("[data-v-shape]"),
+          {
+            x: -5,
+            y: -31,
+            duration: 5.6,
+            ease: "sine.inOut",
+          }
+        )
+        .to(
+          q("[data-v-blob]"),
+          {
+            scaleX: 0.975,
+            scaleY: 1.035,
+            rotation: -2,
+            duration: 5.6,
+            ease: "sine.inOut",
+          },
+          "<"
+        );
     },
     { scope: sectionRef }
   );
 
   return (
-    <section ref={sectionRef} className="bg-sand">
+    <section ref={sectionRef} className="relative overflow-hidden bg-sand">
+      <div
+        data-v-shape
+        aria-hidden="true"
+        className="pointer-events-none absolute right-[5vw] top-[16%] hidden h-[clamp(260px,28vw,430px)] w-[clamp(260px,28vw,430px)] items-center justify-center opacity-90 lg:flex"
+      >
+        <div data-v-blob className="absolute inset-0 origin-center">
+          <svg
+            viewBox="0 0 200 200"
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-full w-full drop-shadow-[0_30px_28px_rgba(37,37,37,0.16)]"
+          >
+            <path
+              fill="none"
+              stroke="#6f382d"
+              strokeOpacity="0.38"
+              strokeWidth="1.2"
+              d="M44.7,-76.4C58.8,-69.2,71.8,-59.1,79.6,-45.8C87.4,-32.5,90,-16.3,88.5,-0.9C87,14.5,81.4,29,72.6,41.1C63.8,53.2,51.8,62.9,38.4,70.1C25,77.3,10.2,82,-4.3,87.7C-18.8,93.4,-33.1,100.1,-45.3,95.5C-57.5,90.9,-67.6,75,-74.5,58.5C-81.4,42,-85.1,24.9,-86.2,7.7C-87.3,-9.5,-85.8,-26.8,-78.1,-40.3C-70.4,-53.8,-56.5,-63.5,-42.2,-70.4C-27.9,-77.3,-13.9,-81.4,1,-83.5C15.9,-85.6,30.6,-83.6,44.7,-76.4Z"
+              transform="translate(100 100)"
+            />
+            <path
+              fill="#874837"
+              fillOpacity="0.96"
+              d="M44.7,-76.4C58.8,-69.2,71.8,-59.1,79.6,-45.8C87.4,-32.5,90,-16.3,88.5,-0.9C87,14.5,81.4,29,72.6,41.1C63.8,53.2,51.8,62.9,38.4,70.1C25,77.3,10.2,82,-4.3,87.7C-18.8,93.4,-33.1,100.1,-45.3,95.5C-57.5,90.9,-67.6,75,-74.5,58.5C-81.4,42,-85.1,24.9,-86.2,7.7C-87.3,-9.5,-85.8,-26.8,-78.1,-40.3C-70.4,-53.8,-56.5,-63.5,-42.2,-70.4C-27.9,-77.3,-13.9,-81.4,1,-83.5C15.9,-85.6,30.6,-83.6,44.7,-76.4Z"
+              transform="translate(100 100)"
+            />
+          </svg>
+          <span className="absolute left-[27%] top-[22%] h-8 w-16 rotate-[-28deg] rounded-full bg-cream/20 blur-md" />
+        </div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-cream">
+          <span className="font-serif text-5xl leading-none">20</span>
+          <span className="mt-2 text-[0.55rem] font-medium uppercase tracking-[0.28em]">
+            years of craft
+          </span>
+        </div>
+      </div>
+      
       <div className="px-6 py-20 md:px-10 md:py-32">
         {/* Kicker */}
         <div data-v-el className="flex items-center gap-4 text-clay">
@@ -76,7 +158,7 @@ export default function Values() {
 
         {/* Editorial statement */}
         <div data-v-el className="mt-8 max-w-4xl">
-          <h2 className="font-serif text-[clamp(2.5rem,7vw,6rem)] leading-[0.95] tracking-[-0.02em] text-ink">
+          <h2 className="font-serif md:max-w-3xl text-[clamp(2.5rem,7vw,6rem)] leading-[0.95] tracking-[-0.02em] text-ink">
             20+ years.
             <br />
             One standard.

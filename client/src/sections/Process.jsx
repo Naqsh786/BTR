@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap, useGSAP, ScrollTrigger } from "../lib/gsap";
-import { process } from "../data/site";
+
+const process = [
+  { step: "01", title: "Consultation", body: "We listen to your vision, assess the space, and provide a clear, honest estimate — no surprises." },
+  { step: "02", title: "Design & selection", body: "We guide you through materials and layouts tailored to your style, purpose, and budget." },
+  { step: "03", title: "Expert craft", body: "Efficient, meticulous installation — waterproofing, tile, heating and finishes done right." },
+  { step: "04", title: "The reveal", body: "A polished, lasting result, delivered on a timeline you always know in advance." },
+];
 
 export default function Process() {
   const sectionRef = useRef(null);

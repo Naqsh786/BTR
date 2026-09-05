@@ -1,8 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { gsap, useGSAP } from "../lib/gsap";
-import { testimonials } from "../data/site";
+import personEvie from "../assets/images/person-evie.jpg";
+import personWaylon from "../assets/images/person-waylon.jpg";
+import personDaniel from "../assets/images/person-daniel.jpg";
 import Stars from "../components/ui/Stars";
+
+const testimonials = [
+  { quote: "Beyond The Ridge turned my house into a dream home. Their attention to detail and the precision in their work is unparalleled. I'm constantly getting compliments on my new floors.", name: "Evie Morgan", role: "Homeowner", rating: 4.9, image: personEvie },
+  { quote: "We've worked with various flooring and tiling services, but Beyond The Ridge is exceptional. Their professionalism and commitment to excellence made our renovation a success.", name: "Waylon Nelson", role: "Project Coordinator", rating: 4.8, image: personWaylon },
+  { quote: "Beyond The Ridge is more than a tiling service; they are artists. Their ability to take our ideas and turn them into stunning tile designs added a real touch of elegance to our restaurant.", name: "Daniel Watkins", role: "Restaurant Manager", rating: 5.0, image: personDaniel },
+];
 
 const prefersReduced =
   typeof window !== "undefined" &&

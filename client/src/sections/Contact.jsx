@@ -1,7 +1,11 @@
 import { useRef } from "react";
 import { ArrowUpRight, Phone, Mail } from "lucide-react";
 import { gsap, useGSAP } from "../lib/gsap";
-import { business, kitchenWhite } from "../data/site";
+import kitchenWhite from "../assets/images/kitchen-white.jpg";
+
+const phone = "(705) 706-2329";
+const phoneHref = "tel:7057062329";
+const email = "kevinsr@beyondtheridge.ca";
 
 const prefersReduced =
   typeof window !== "undefined" &&
@@ -94,7 +98,7 @@ export default function Contact() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-ink/30" />
 
       {/* Content */}
-      <div className="relative z-10 flex min-h-[85vh] flex-col items-center justify-center px-6 text-center">
+      <div className="relative z-10 flex min-h-[85vh] flex-col items-center justify-center py-10 px-6 text-center">
         {/* Kicker */}
         <div data-c-reveal className="flex items-center gap-4 text-cream">
           <span className="h-px w-10 bg-clay" />
@@ -103,7 +107,7 @@ export default function Contact() {
         </div>
 
         {/* Heading with line-mask reveal */}
-        <h2 className="mt-8 font-serif text-[clamp(2.5rem,7vw,6rem)] leading-[0.95] tracking-[-0.02em] text-cream">
+        <h2 className="mt-5 font-serif text-[clamp(2.5rem,7vw,6rem)] leading-[0.95] tracking-[-0.02em] text-cream">
           <span className="block overflow-hidden">
             <span data-c-line className="block">Ready to go</span>
           </span>
@@ -117,16 +121,16 @@ export default function Contact() {
         {/* Description */}
         <p
           data-c-reveal
-          className="mt-6 max-w-lg text-lg leading-relaxed text-cream/70"
+          className="mt-5 max-w-lg text-lg leading-relaxed text-cream/70"
         >
           Tell us about your space and your vision. We&rsquo;ll get back to you
           with a clear, honest estimate — no surprises.
         </p>
 
         {/* CTAs */}
-        <div data-c-reveal className="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <div data-c-reveal className="mt-5 flex flex-wrap items-center justify-center gap-4">
           <a
-            href={business.phoneHref}
+            href={phoneHref}
             className="group inline-flex items-center gap-2 rounded-full bg-clay px-8 py-4 text-[0.8rem] font-medium uppercase tracking-[0.14em] text-cream transition-colors duration-300 hover:bg-clay-deep"
           >
             Get your free estimate
@@ -137,7 +141,7 @@ export default function Contact() {
             />
           </a>
           <a
-            href={`mailto:${business.email}`}
+            href={`mailto:${email}`}
             className="group inline-flex items-center gap-2 rounded-full border border-cream/30 px-8 py-4 text-[0.8rem] font-medium uppercase tracking-[0.14em] text-cream transition-colors duration-300 hover:border-cream hover:bg-cream hover:text-ink"
           >
             Send an email
@@ -145,25 +149,25 @@ export default function Contact() {
         </div>
 
         {/* Contact details with staggered icon entrance */}
-        <div className="mt-14 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-t border-cream/15 pt-8">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-t border-cream/15 pt-8">
           <a
             data-c-icon
-            href={business.phoneHref}
+            href={phoneHref}
             className="flex items-center gap-3 text-cream/70 transition-colors hover:text-cream"
           >
             <Phone size={16} strokeWidth={1.75} className="text-clay" />
-            <span className="text-sm">{business.phone}</span>
+            <span className="text-sm">{phone}</span>
           </a>
           <a
             data-c-icon
-            href={`mailto:${business.email}`}
+            href={`mailto:${email}`}
             className="flex items-center gap-3 text-cream/70 transition-colors hover:text-cream"
           >
             <Mail size={16} strokeWidth={1.75} className="text-clay" />
-            <span className="text-sm">{business.email}</span>
+            <span className="text-sm">{email}</span>
           </a>
           <span data-c-icon className="flex items-center gap-3 text-cream/50">
-            <span className="text-sm">{business.location}</span>
+            <span className="text-sm">Muskoka, Ontario, Canada</span>
           </span>
         </div>
       </div>

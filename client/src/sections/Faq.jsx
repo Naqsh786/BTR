@@ -1,9 +1,17 @@
 import { useRef, useState } from "react";
 import { Plus } from "lucide-react";
 import { gsap, useGSAP } from "../lib/gsap";
-import { faqs } from "../data/site";
 import Reveal, { Lines } from "../components/ui/Reveal";
 import Button from "../components/ui/Button";
+
+const faqs = [
+  { q: "Do you provide both renovations and new build installations?", a: "Yes, we work with both homeowners and builders on projects of all sizes, from full bathroom renovations to custom tile in new homes." },
+  { q: "How long does a typical project take?", a: "Every project is unique, but we provide clear timelines upfront so you always know what to expect. Communication is our priority from start to finish." },
+  { q: "How do I know which tile or material is right for my project?", a: "We guide you through every step, explaining options and helping you select the best material for your style, purpose, and budget." },
+  { q: "What makes Beyond The Ridge different from other contractors?", a: "We combine over 20 years of hands-on experience with a focus on integrity and communication. Our clients never face surprises — just quality results." },
+  { q: "Do you offer waterproofing and in-floor heating?", a: "Absolutely. We provide professional waterproofing for showers and bathrooms, along with in-floor heating systems for comfort and efficiency." },
+  { q: "Do you also handle painting and trim work?", a: "Yes, in addition to tile and flooring, we provide painting and trim services to give your renovation a polished, finished look." },
+];
 
 const prefersReduced =
   typeof window !== "undefined" &&
